@@ -31,6 +31,7 @@ def get_profile():
 
 @app.get("/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
+    global XTS_int
     root = "https://ttblaze.iifl.com"
     access_token="Check api key secret or try again"
     print(api_key,api_secret,root)
