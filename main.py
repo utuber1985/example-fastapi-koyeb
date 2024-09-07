@@ -23,8 +23,10 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 @app.get("/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
+    root = "https://ttblaze.iifl.com"
     XTS_int = XTSConnect(api_key, api_secret, "WebAPI", root)
     resp = XTS_int.interactive_login()
+    print(resp.text)
     access_token = resp["result"]["token"]
     Client_ID = resp["result"]["userID"]
     isInvestor=resp["result"]["isInvestorClient"]    
