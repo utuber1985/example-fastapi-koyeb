@@ -26,8 +26,50 @@ def get_margin():
 @app.get("/profile")
 def get_profile():
     global XTS_int
-    str_profile=XTS_int.get_balance()
+    str_profile=XTS_int.get_profile()
     return {"Margin": str_profile}
+
+@app.get("/logout")
+def get_logout():
+    global XTS_int
+    str_logout=XTS_int.interactive_logout()
+    return {"Logout Sts": str_logout}
+
+@app.get("/orders")
+def get_orders():
+    global XTS_int
+    str_orders=XTS_int.get_order_book()
+    return {"Orders": str_orders}
+
+@app.get("/trades")
+def get_trades():
+    global XTS_int
+    str_trades=XTS_int.get_trade()
+    return {"Orders": str_trades}
+    
+@app.get("/holding")
+def get_holding():
+    global XTS_int
+    str_holding=XTS_int.get_holding()
+    return {"Orders": str_holding}
+
+@app.get("/positions_day")
+def get_pos_day():
+    global XTS_int
+    str_pos_day=XTS_int.get_position_daywise()
+    return {"Positions (Daywise)": str_pos_day}
+
+@app.get("/positions_net")
+def get_pos_net():
+    global XTS_int
+    str_pos_net=XTS_int.get_position_netwise()
+    return {"Positions (Netwise)": str_pos_net}
+
+# Marketdata login
+# get quote
+# get hsitorical
+# web socket
+
 
 @app.get("/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
@@ -45,3 +87,19 @@ def login(api_key: str, api_secret: str):
     except Exception as ex:
         print(f'Error in token generation: {str(ex)}')
     return {"access_token": access_token}
+
+# @app.get("/set_token/{user_id}/{access_token}")
+# def login(api_key: str, api_secret: str):
+#     global XTS_int
+#     root = "https://ttblaze.iifl.com"
+#     print(api_key,api_secret,root)
+#     try:
+#         XTS_int = XTSConnect(api_key, api_secret, "WebAPI", root)
+#         resp = XTS_int.set_common_variables(user_id,access_token)
+#         print(resp)
+#         access_token = resp["result"]["token"]
+#         Client_ID = resp["result"]["userID"]
+#         isInvestor=resp["result"]["isInvestorClient"]    
+#     except Exception as ex:
+#         print(f'Error in token generation: {str(ex)}')
+#     return {"access_token": access_token}
