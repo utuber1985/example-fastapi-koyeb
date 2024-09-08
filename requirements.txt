@@ -22,4 +22,5 @@ six
 python-socketio
 websocket-client
 pyjwt
+decouple
 passlib[bcrypt]
