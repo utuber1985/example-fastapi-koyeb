@@ -6,6 +6,8 @@ app = FastAPI()
 from Connect import XTSConnect
 import Exception as ex
 root = "https://ttblaze.iifl.com"
+XTS_int=None
+XTS_mar=None
 access_token=""
 # login store access token, feedtoken
 # pos ord hold
@@ -29,11 +31,7 @@ def get_profile():
     str_profile=XTS_int.get_profile()
     return {"Margin": str_profile}
 
-@app.get("/logout")
-def get_logout():
-    global XTS_int
-    str_logout=XTS_int.interactive_logout()
-    return {"Logout Sts": str_logout}
+
 
 @app.get("/orders")
 def get_orders():
@@ -71,7 +69,7 @@ def get_pos_net():
 # web socket
 
 
-@app.get("/login/{api_key}/{api_secret}")
+@app.get("/interactive/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
     global XTS_int
     root = "https://ttblaze.iifl.com"
@@ -86,9 +84,9 @@ def login(api_key: str, api_secret: str):
         isInvestor=resp["result"]["isInvestorClient"]    
     except Exception as ex:
         print(f'Error in token generation: {str(ex)}')
-    return {"access_token": access_token}
+    return {"Interactive access token": access_token}
 
-@app.get("/set_token/{access_token}")
+@app.get("/interactive/set_token/{access_token}")
 def login(access_token: str):
     global XTS_int
     root = "https://ttblaze.iifl.com"
@@ -103,3 +101,49 @@ def login(access_token: str):
     except Exception as ex:
         print(f'Error in token generation: {str(ex)}')
     return {"Token Status": status}
+
+@app.get("/interactive/logout")
+def get_logout():
+    global XTS_int
+    str_logout=XTS_int.interactive_logout()
+    return {"Logout Sts": str_logout}
+
+@app.get("/interactive/login/{api_key}/{api_secret}")
+def login(api_key: str, api_secret: str):
+    global XTS_mar
+    root = "https://ttblaze.iifl.com"
+    access_token="Check api key secret or try again"
+    print(api_key,api_secret,root)
+    try:
+        XTS_mar = XTSConnect(api_key, api_secret, "WebAPI", root)
+        resp = XTS_mar.marketdata_login()
+        print(resp)
+        access_token = resp["result"]["token"]
+        Client_ID = resp["result"]["userID"]
+        isInvestor=resp["result"]["isInvestorClient"]    
+    except Exception as ex:
+        print(f'Error in token generation: {str(ex)}')
+    return {"Marketdata access token": access_token}
+
+
+@app.get("/marketdata/set_token/{access_token}")
+def login(access_token: str):
+    global XTS_mar
+    root = "https://ttblaze.iifl.com"
+    api_key="apikey"
+    api_secret="apisecret"
+    user_id="user_id"
+    status='fail'
+    try:
+        XTS_mar = XTSConnect(api_key, api_secret, "WebAPI", root)
+        resp = XTS_mar.set_common_variables(user_id,access_token,True)
+        status=resp['description']   
+    except Exception as ex:
+        print(f'Error in token generation: {str(ex)}')
+    return {"Marketdata Token Status": status}
+
+@app.get("/marketdata/logout")
+def get_logout():
+    global XTS_mar
+    str_logout=XTS_mar.marketdata_logout()
+    return {"Marketdata Logout Status": str_logout}
