@@ -18,3 +18,5 @@ watchfiles==0.21.0
 websockets==12.0
 requests
 six
+python-socketio
+websocket-client
