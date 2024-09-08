@@ -68,6 +68,25 @@ def get_pos_net():
 # get hsitorical
 # web socket
 
+@app.get("/config")
+def get_config():
+    global XTS_mar
+    str_config=XTS_mar.get_config()
+    return {"Positions (Netwise)": str_config}
+
+
+@app.get("/quote/{exch_seg}/{token}")
+def get_quote(exch_seg: str, token: str):
+    global XTS_mar
+    try:
+        instruments = [{'exchangeSegment': exch_seg, 'exchangeInstrumentID': token}]
+        str_quote=XTS_mar.get_quote(
+                    Instruments=instruments,
+                    xtsMessageCode=1502,
+                    publishFormat='JSON')['result']
+    except:
+        str_quote='Failed'
+    return {"LTP Quote": str_quote}
 
 @app.get("/interactive/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
@@ -108,7 +127,7 @@ def get_logout():
     str_logout=XTS_int.interactive_logout()
     return {"Logout Sts": str_logout}
 
-@app.get("/interactive/login/{api_key}/{api_secret}")
+@app.get("/marketdata/login/{api_key}/{api_secret}")
 def login(api_key: str, api_secret: str):
     global XTS_mar
     root = "https://ttblaze.iifl.com"
@@ -119,8 +138,8 @@ def login(api_key: str, api_secret: str):
         resp = XTS_mar.marketdata_login()
         print(resp)
         access_token = resp["result"]["token"]
-        Client_ID = resp["result"]["userID"]
-        isInvestor=resp["result"]["isInvestorClient"]    
+        # Client_ID = resp["result"]["userID"]
+        # isInvestor=resp["result"]["isInvestorClient"]    
     except Exception as ex:
         print(f'Error in token generation: {str(ex)}')
     return {"Marketdata access token": access_token}
