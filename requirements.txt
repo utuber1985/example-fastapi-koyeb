@@ -1,3 +1,4 @@
+
 annotated-types==0.6.0
 anyio==4.2.0
 click==8.1.7
@@ -20,3 +21,5 @@ requests
 six
 python-socketio
 websocket-client
+pyjwt
+passlib[bcrypt]
