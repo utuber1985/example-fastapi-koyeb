@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 from Connect import XTSConnect
-import Exception as ex
+# import Exception as ex
 from InteractiveSocketClient import OrderSocket_io
 from MarketDataSocketClient import MDSocket_io
 
