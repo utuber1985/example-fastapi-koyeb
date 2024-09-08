@@ -88,18 +88,17 @@ def login(api_key: str, api_secret: str):
         print(f'Error in token generation: {str(ex)}')
     return {"access_token": access_token}
 
-# @app.get("/set_token/{user_id}/{access_token}")
-# def login(api_key: str, api_secret: str):
-#     global XTS_int
-#     root = "https://ttblaze.iifl.com"
-#     print(api_key,api_secret,root)
-#     try:
-#         XTS_int = XTSConnect(api_key, api_secret, "WebAPI", root)
-#         resp = XTS_int.set_common_variables(user_id,access_token)
-#         print(resp)
-#         access_token = resp["result"]["token"]
-#         Client_ID = resp["result"]["userID"]
-#         isInvestor=resp["result"]["isInvestorClient"]    
-#     except Exception as ex:
-#         print(f'Error in token generation: {str(ex)}')
-#     return {"access_token": access_token}
+@app.get("/set_token/{access_token}")
+def login(access_token: str):
+    global XTS_int
+    root = "https://ttblaze.iifl.com"
+    api_key="apikey"
+    api_secret="apisecret"
+    user_id="user_id"
+    try:
+        XTS_int = XTSConnect(api_key, api_secret, "WebAPI", root)
+        resp = XTS_int.set_common_variables(user_id,access_token,True)
+        print(resp)    
+    except Exception as ex:
+        print(f'Error in token generation: {str(ex)}')
+    return {"access_token": access_token}
