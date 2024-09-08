@@ -95,10 +95,11 @@ def login(access_token: str):
     api_key="apikey"
     api_secret="apisecret"
     user_id="user_id"
+    status='fail'
     try:
         XTS_int = XTSConnect(api_key, api_secret, "WebAPI", root)
         resp = XTS_int.set_common_variables(user_id,access_token,True)
-        print(resp)    
+        status=resp['description']   
     except Exception as ex:
         print(f'Error in token generation: {str(ex)}')
-    return {"access_token": access_token}
+    return {"Token Status": status}
