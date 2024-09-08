@@ -5,8 +5,8 @@ from fastapi import FastAPI
 app = FastAPI()
 from Connect import XTSConnect
 # import Exception as ex
-from InteractiveSocketClient import OrderSocket_io
-from MarketDataSocketClient import MDSocket_io
+# from InteractiveSocketClient import OrderSocket_io
+# from MarketDataSocketClient import MDSocket_io
 
 JWT_SECRET = config("secret")
 JWT_ALGORITHM = config("algorithm")
