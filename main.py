@@ -8,6 +8,9 @@ import Exception as ex
 from InteractiveSocketClient import OrderSocket_io
 from MarketDataSocketClient import MDSocket_io
 
+JWT_SECRET = config("secret")
+JWT_ALGORITHM = config("algorithm")
+
 root = "https://ttblaze.iifl.com"
 XTS_int=None
 XTS_mar=None
